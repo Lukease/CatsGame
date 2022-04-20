@@ -51,8 +51,9 @@ const click = event => {
     }
 
     const [firstCard, secondCard] = clickedList
+
     if (clickLimit === 0 && firstCard === secondCard) {
-        setTimeout(()=>{
+        setTimeout(() => {
             event.target.removeEventListener('click', click)
 
             const points = document.querySelector('.score__value')
@@ -63,7 +64,7 @@ const click = event => {
             clickedList = []
             clickedIndex = []
 
-            if (scoreNumber === 10 ){
+            if (scoreNumber === 10) {
                 alert(`You win, your score: ${scoreNumber} points`)
                 window.location.reload()
             }
@@ -82,7 +83,7 @@ const click = event => {
     }
 }
 
-const createCards = () =>{
+const createCards = () => {
     const newCard = document.createElement('div')
 
     newCard.classList.add('card')
@@ -101,22 +102,22 @@ const createCards = () =>{
 const arena = createArena()
 const scoreBox = createScoreBox()
 const imagesLocation = './cats/'
-let imagesArray = Array.from(new Array(10)).map((object,index) => index)
+let imagesArray = Array.from(new Array(10)).map((object, index) => index)
 let clickedList = []
 let clickLimit = 2
 let clickedIndex = []
 let sortedArrayOfImages = []
 
-const addHiddenImages = () =>{
+const addHiddenImages = () => {
     sortedArrayOfImages = imagesArray.concat(imagesArray)
-    sortedArrayOfImages.sort((a,b)=>0.5-Math.random())
+    sortedArrayOfImages.sort((a, b) => 0.5 - Math.random())
 
     return sortedArrayOfImages
 }
 
 addHiddenImages()
 
-sortedArrayOfImages.forEach((object,index)=>{
+sortedArrayOfImages.forEach((object, index) => {
     createCards()
 
     const newCard = document.querySelectorAll('.card')
