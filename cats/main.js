@@ -14,7 +14,7 @@ const createArena = () => {
     return arena
 }
 
-let number = 0
+let scoreNumber = 0
 const createScoreBox = () => {
     const scoreBox = document.createElement('div')
 
@@ -36,22 +36,51 @@ const createScoreBox = () => {
 
     scoreValue.classList.add('score__value')
     score.appendChild(scoreValue)
-    scoreValue.innerHTML = number
+    scoreValue.innerHTML = scoreNumber
 
     return scoreValue
 }
 
-const arena = createArena()
-let scoreBox = createScoreBox()
+const click = event => {
+    if (clickLimit > 0) {
+        event.target.classList.add('hide')
+        clickLimit--
+        event.target.nextElementSibling.classList.add('show')
+        clickedList = clickedList.concat(event.target.nextElementSibling.src)
+        clickedIndex = clickedIndex.concat(event.target)
+    }
 
-let cardsArray = Array.from(new Array(20)).map(() => '')
-const imagesLocation = './cats/'
-let imagesArray = Array.from(new Array(10))
-let clickedList = []
-let clickLimit = 2
-let clickedIndex = []
+    if (clickLimit === 0 && clickedList[0] === clickedList[1]) {
+        setTimeout(()=>{
+            event.target.removeEventListener('click', click)
 
-cardsArray.forEach((object) => {
+            let points = document.querySelector('.score__value')
+
+            scoreNumber += 1
+            points.innerHTML = scoreNumber
+            clickLimit = 2
+            clickedList = []
+            clickedIndex = []
+        }, 1000)
+    }
+
+    if (clickLimit === 0 && clickedList[0] !== clickedList[1]) {
+        setTimeout(() => {
+            clickedIndex[0].classList.remove('hide')
+            event.target.classList.remove('hide')
+            clickLimit = 2
+            clickedList = []
+            clickedIndex = []
+        }, 1000)
+    }
+
+    if (scoreNumber === 10 ){
+        alert(`You win, your score: ${scoreNumber} points`)
+        window.location.reload()
+    }
+}
+
+const createCards = () =>{
     const newCard = document.createElement('div')
 
     newCard.classList.add('card')
@@ -62,46 +91,22 @@ cardsArray.forEach((object) => {
     cardBack.classList.add('card__back')
     newCard.appendChild(cardBack)
 
-    const click = (event) => {
-        if (clickLimit > 0) {
-            event.target.classList.add('hide')
-            clickLimit--
-            event.target.nextElementSibling.classList.add('show')
-            clickedList.push(event.target.nextElementSibling.src)
-            clickedIndex.push(event.target)
-        }
-
-        if (clickLimit === 0 && clickedList[0] === clickedList[1]) {
-           setTimeout(()=>{
-               event.target.removeEventListener('click', click)
-
-               let points = document.querySelector('.score__value')
-
-               number += 1
-               points.innerHTML = number
-               clickLimit = 2
-               clickedList = []
-               clickedIndex = []
-           }, 1000)
-        }
-
-        if (clickLimit === 0 && clickedList[0] !== clickedList[1]) {
-            setTimeout(() => {
-                clickedIndex[0].classList.remove('hide')
-                event.target.classList.remove('hide')
-                clickLimit = 2
-                clickedList = []
-                clickedIndex = []
-            }, 1000)
-        }
-
-        if (number === 10 ){
-            alert(`You win, your score ${number} points`)
-            window.location.reload()
-        }
-    }
-
     cardBack.addEventListener('click', click)
+
+    return cardBack
+}
+const arena = createArena()
+const scoreBox = createScoreBox()
+
+let cardsArray = Array.from(new Array(20)).map(() => '')
+const imagesLocation = './cats/'
+let imagesArray = Array.from(new Array(10))
+let clickedList = []
+let clickLimit = 2
+let clickedIndex = []
+
+cardsArray.forEach((object) => {
+    createCards()
 })
 
 const newCard = document.querySelectorAll('.card')
