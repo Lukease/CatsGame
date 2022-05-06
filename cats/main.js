@@ -94,5 +94,6 @@ sortedArrayOfImages.forEach((object, index) => {
     createCards()
 
     const newCard = $('.card').eq(index)
+
     $('<img>').addClass('card__front').appendTo(newCard).attr('src' ,`./cats/cat${object + 1}.jpg`)
 })
