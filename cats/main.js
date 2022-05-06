@@ -11,7 +11,7 @@ let scoreNumber = 0
 const createScoreBox = () => {
     const scoreBox = $('<div></div>').addClass('app__score').appendTo(app)
     const score = $('<div></div>').addClass('score').appendTo(scoreBox)
-    const scoreSpan = $('<span> score: </span>').addClass('score__span').appendTo(score)
+    const scoreSpan = $('<span></span>').addClass('score__span').appendTo(score).text(' score: ')
     const scoreValue = $('<span></span>').addClass('score__value').appendTo(score).text(scoreNumber)
 
     return scoreValue
@@ -23,10 +23,13 @@ const click = event => {
         clickLimit--
         $(event.target).siblings().addClass('show')
         clickedList = clickedList.concat($(event.target).siblings().attr('src'))
+        targetList = targetList.concat($(event.target))
         clickedIndex = clickedIndex.concat($(event.target))
+
     }
 
     const [firstCard, secondCard] = clickedList
+    const [firstTarget, secondTarget] = targetList
 
     if (clickLimit === 0 && firstCard === secondCard) {
         setTimeout(() => {
@@ -38,6 +41,7 @@ const click = event => {
             clickLimit = 2
             clickedList = []
             clickedIndex = []
+            targetList = []
 
             if (scoreNumber === 10) {
                 alert(`You win, your score: ${scoreNumber} points`)
@@ -49,11 +53,12 @@ const click = event => {
 
     if (clickLimit === 0 && firstCard !== secondCard) {
         setTimeout(() => {
-            clickedIndex[0].removeClass('hide')
-            $(event.target).removeClass('hide')
+            firstTarget.removeClass('hide')
+            secondTarget.removeClass('hide')
             clickLimit = 2
             clickedList = []
             clickedIndex = []
+            targetList = []
         }, 1000)
     }
 }
@@ -73,6 +78,7 @@ let imagesArray = Array.from(new Array(10)).map((object, index) => index)
 let clickedList = []
 let clickLimit = 2
 let clickedIndex = []
+let targetList = []
 let sortedArrayOfImages = []
 
 const addHiddenImages = () => {
@@ -88,5 +94,5 @@ sortedArrayOfImages.forEach((object, index) => {
     createCards()
 
     const newCard = $('.card').eq(index)
-    const image = $('<img>').addClass('card__front').appendTo(newCard).attr('src' ,`./cats/cat${object + 1}.jpg`)
+    $('<img>').addClass('card__front').appendTo(newCard).attr('src' ,`./cats/cat${object + 1}.jpg`)
 })
