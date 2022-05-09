@@ -1,18 +1,18 @@
 const app = $('.app')
 
 const createArena = () => {
-    const arenaBox = $('<div></div>').addClass('app__cards').appendTo(app)
-    const arena = $('<div></div>').addClass('cards-arena').appendTo(arenaBox)
+    const arenaBox = $('<div>').addClass('app__cards').appendTo(app)
+    const arena = $('<div>').addClass('cards-arena').appendTo(arenaBox)
 
     return arena
 }
 
 let scoreNumber = 0
 const createScoreBox = () => {
-    const scoreBox = $('<div></div>').addClass('app__score').appendTo(app)
-    const score = $('<div></div>').addClass('score').appendTo(scoreBox)
-    const scoreSpan = $('<span></span>').addClass('score__span').appendTo(score).text(' score: ')
-    const scoreValue = $('<span></span>').addClass('score__value').appendTo(score).text(scoreNumber)
+    const scoreBox = $('<div>').addClass('app__score').appendTo(app)
+    const score = $('<div>').addClass('score').appendTo(scoreBox)
+    const scoreSpan = $('<span>').addClass('score__span').appendTo(score).text(' score: ')
+    const scoreValue = $('<span>').addClass('score__value').appendTo(score).text(scoreNumber)
 
     return scoreValue
 }
@@ -25,7 +25,6 @@ const click = event => {
         clickedList = clickedList.concat($(event.target).siblings().attr('src'))
         targetList = targetList.concat($(event.target))
         clickedIndex = clickedIndex.concat($(event.target))
-
     }
 
     const [firstCard, secondCard] = clickedList
@@ -64,8 +63,8 @@ const click = event => {
 }
 
 const createCards = () => {
-    const newCard = $('<div></div>').addClass('card').appendTo(arena)
-    const cardBack = $('<div></div>').addClass('card__back').appendTo(newCard)
+    const newCard = $('<div>').addClass('card').appendTo(arena)
+    const cardBack = $('<div>').addClass('card__back').appendTo(newCard)
 
     cardBack.on('click',click)
 
