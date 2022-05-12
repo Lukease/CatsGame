@@ -66,33 +66,54 @@ const createCards = () => {
     const newCard = $('<div>').addClass('card').appendTo(arena)
     const cardBack = $('<div>').addClass('card__back').appendTo(newCard)
 
-    cardBack.on('click',click)
+    cardBack.on('click', click)
 
     return cardBack
 }
 
 const arena = createArena()
 const scoreBox = createScoreBox()
-let imagesArray = Array.from(new Array(10)).map((object, index) => index)
+let imagesArray = []
 let clickedList = []
 let clickLimit = 2
 let clickedIndex = []
 let targetList = []
 let sortedArrayOfImages = []
+const url = 'https://api.thecatapi.com/v1/images/search?limit=10&mime_types=jpg,png'
 
-const addHiddenImages = () => {
-    sortedArrayOfImages = imagesArray.concat(imagesArray)
-    sortedArrayOfImages.sort((a, b) => 0.5 - Math.random())
+const downloadCats = async () => {
+    await fetch(url, {
+        headers: {
+            ['x-api-key']: 'ebbcfafc-a8c9-448c-99f4-f8b9ebfc312c'
+        }
+    })
+        .then(res => res.json())
+        .then(res => {
+            res.forEach(object => {
+                imagesArray = imagesArray.concat(object.url)
+            })
+        })
+        .catch(error => {
+            console.log(error)
+        })
 
-    return sortedArrayOfImages
+    const addHiddenImages = () => {
+        sortedArrayOfImages = imagesArray.concat(imagesArray)
+        sortedArrayOfImages.sort((a, b) => 0.5 - Math.random())
+
+        return sortedArrayOfImages
+    }
+
+    addHiddenImages()
+
+    sortedArrayOfImages.forEach((object, index) => {
+        createCards()
+
+        const newCard = $('.card').eq(index)
+
+        $('<img>').addClass('card__front').appendTo(newCard).attr('src', object)
+    })
 }
 
-addHiddenImages()
+downloadCats()
 
-sortedArrayOfImages.forEach((object, index) => {
-    createCards()
-
-    const newCard = $('.card').eq(index)
-
-    $('<img>').addClass('card__front').appendTo(newCard).attr('src' ,`./cats/cat${object + 1}.jpg`)
-})
