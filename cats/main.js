@@ -43,8 +43,10 @@ const click = event => {
             targetList = []
 
             if (scoreNumber === 10) {
-                alert(`You win, your score: ${scoreNumber} points`)
-                window.location.reload()
+                setTimeout(() => {
+                    alert(`You win, your score: ${scoreNumber} points`)
+                    window.location.reload()
+                }, 1000)
             }
 
         }, 1000)
@@ -82,6 +84,7 @@ let sortedArrayOfImages = []
 const url = 'https://api.thecatapi.com/v1/images/search?limit=10&mime_types=jpg,png'
 
 const downloadCats = async () => {
+    const loader = $('.loader').appendTo($('.cards-arena'))
     await fetch(url, {
         headers: {
             ['x-api-key']: 'ebbcfafc-a8c9-448c-99f4-f8b9ebfc312c'
@@ -91,20 +94,15 @@ const downloadCats = async () => {
         .then(res => {
             res.forEach(object => {
                 imagesArray = imagesArray.concat(object.url)
+                loader.remove()
             })
         })
         .catch(error => {
-            console.log(error)
+            alert(error)
         })
 
-    const addHiddenImages = () => {
-        sortedArrayOfImages = imagesArray.concat(imagesArray)
-        sortedArrayOfImages.sort((a, b) => 0.5 - Math.random())
-
-        return sortedArrayOfImages
-    }
-
-    addHiddenImages()
+    sortedArrayOfImages = imagesArray.concat(imagesArray)
+    sortedArrayOfImages.sort((a, b) => 0.5 - Math.random())
 
     sortedArrayOfImages.forEach((object, index) => {
         createCards()
