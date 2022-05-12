@@ -95,7 +95,6 @@ const downloadCats = async () => {
             res.forEach(object => {
                 imagesArray = imagesArray.concat(object.url)
             })
-
         })
         .catch(error => {
             $('<div>').text(error).appendTo($('.cards-arena')).css('color', 'red')
