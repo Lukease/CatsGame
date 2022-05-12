@@ -94,11 +94,14 @@ const downloadCats = async () => {
         .then(res => {
             res.forEach(object => {
                 imagesArray = imagesArray.concat(object.url)
-                loader.remove()
             })
+
         })
         .catch(error => {
-            alert(error)
+            $('<div>').text(error).appendTo($('.cards-arena')).css('color', 'red')
+        })
+        .finally(() => {
+            loader.remove()
         })
 
     sortedArrayOfImages = imagesArray.concat(imagesArray)
